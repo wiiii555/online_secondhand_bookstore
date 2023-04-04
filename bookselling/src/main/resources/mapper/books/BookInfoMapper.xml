@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.books.mapper.BookInfoMapper">
+
+    <resultMap type="BookInfo" id="BookInfoResult">
+        <id property="bookId"    column="book_id"    />
+        <result property="isbn"    column="isbn"    />
+        <result property="bookName"    column="book_name"    />
+        <result property="bookCoverImg"    column="book_cover_img"    />
+        <result property="author"    column="author"    />
+        <result property="translator"    column="translator"    />
+        <result property="bookDesc"    column="book_desc"    />
+        <result property="publishing"    column="publishing"    />
+        <result property="publishTime"    column="publish_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBookInfoVo">
+        select i.book_id, i.isbn, i.book_ame, i.author, i.translator, i.publising, i.publish_time, i.create_by, i.create_time, i.update_by, i.update_time,
+        from book_info i
+    </sql>
+
+    <select id="selectBookInfoList" parameterType="BookInfo" resultMap="BookInfoResult">
+        <include refid="selectBookInfoVo"/>
+        <where>
+            <if test="bookId != null and bookId != ''"> and i.book_id = #{bookId}</if>
+            <if test="isbn != null and isbn != ''"> and i.isbn = #{isbn}</if>
+            <if test="bookName != null  and bookName != ''"> and i.book_name like concat('%', #{bookName}, '%')</if>
+            <if test="author != null  and productCode != ''"> and i.author like concat('%', #{author}, '%')</if>
+            <if test="translator != null  and productRemark != ''"> and i.translator like concat('%', #{translator}, '%')</if>
+            <if test="publishing != null"> and i.publishing = #{publishing}</if>
+        </where>
+    </select>
+
+    <select id="selectBookInfoByBookId" parameterType="Long" resultMap="BookInfoResult">
+        <include refid="selectBookInfoVo"/>
+        where book_id = #{bookId}
+    </select>
+
+    <insert id="insertBookInfo" parameterType="BookInfo" useGeneratedKeys="true" keyProperty="bookId">
+        insert into book_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="isbn != null and isbn != ''">isbn,</if>
+            <if test="bookName != null and bookName != ''">book_name,</if>
+            <if test="bookCoverImg != null and bookCoverImg != ''">book_cover_img,</if>
+            <if test="author != null and author != ''">author,</if>
+            <if test="translator != null and translator != ''">translator,</if>
+            <if test="publishing != null and publishing != ''">publishing,</if>
+            <if test="publish_time != null and publish_time != ''">publish_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="isbn != null and isbn != ''">#{isbn},</if>
+            <if test="bookName != null and bookName != ''">#{book_name},</if>
+            <if test="bookCoverImg != null and bookCoverImg != ''">#{book_cover_img},</if>
+            <if test="author != null and author != ''">#{author},</if>
+            <if test="translator != null and translator != ''">#{translator},</if>
+            <if test="publishing != null and publishing != ''">#{publishing},</if>
+            <if test="publish_time != null and publish_time != ''">#{publish_time},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBookInfo" parameterType="BookInfo">
+        update book_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isbn != null and isbn != ''">#{isbn},</if>
+            <if test="bookName != null and bookName != ''">#{book_name},</if>
+            <if test="bookCoverImg != null and bookCoverImg != ''">#{book_cover_img},</if>
+            <if test="author != null and author != ''">#{author},</if>
+            <if test="translator != null and translator != ''">#{translator},</if>
+            <if test="publishing != null and publishing != ''">#{publishing},</if>
+            <if test="publish_time != null and publish_time != ''">#{publish_time},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where book_id = #{bookId}
+    </update>
+</mapper>
