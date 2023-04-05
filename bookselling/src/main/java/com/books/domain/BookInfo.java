@@ -1,7 +1,5 @@
 package com.books.domain;
 
-import com.entity.domain.Entity;
-
 public class BookInfo extends Entity {
     /** 书籍ID */
     private int bookId;

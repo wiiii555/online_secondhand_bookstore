@@ -5,24 +5,24 @@
 <mapper namespace="com.books.mapper.BookInfoMapper">
 
     <resultMap type="BookInfo" id="BookInfoResult">
-        <id property="bookId"    column="book_id"    />
-        <result property="isbn"    column="isbn"    />
-        <result property="bookName"    column="book_name"    />
-        <result property="bookCoverImg"    column="book_cover_img"    />
-        <result property="author"    column="author"    />
-        <result property="translator"    column="translator"    />
-        <result property="bookDesc"    column="book_desc"    />
-        <result property="publishing"    column="publishing"    />
-        <result property="publishTime"    column="publish_time"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateBy"    column="update_by"    />
-        <result property="updateTime"    column="update_time"    />
+        <id     property="bookId"           column="book_id"    />
+        <result property="isbn"             column="isbn"    />
+        <result property="bookName"         column="book_name"    />
+        <result property="bookCoverImg"     column="book_cover_img"    />
+        <result property="author"           column="author"    />
+        <result property="translator"       column="translator"    />
+        <result property="bookDesc"         column="book_desc"    />
+        <result property="publishing"       column="publishing"    />
+        <result property="publishTime"      column="publish_time"    />
+        <result property="createBy"         column="create_by"    />
+        <result property="createTime"       column="create_time"    />
+        <result property="updateBy"         column="update_by"    />
+        <result property="updateTime"       column="update_time"    />
     </resultMap>
 
     <sql id="selectBookInfoVo">
-        select i.book_id, i.isbn, i.book_ame, i.author, i.translator, i.publising, i.publish_time, i.create_by, i.create_time, i.update_by, i.update_time,
-        from book_info i
+        select book_id, isbn, book_name, book_cover_img, author, translator, book_desc, publishing, publish_time, create_by, create_time, update_by, update_time
+        from book_info
     </sql>
 
     <select id="selectBookInfoList" parameterType="BookInfo" resultMap="BookInfoResult">
@@ -39,7 +39,7 @@
 
     <select id="selectBookInfoByBookId" parameterType="Long" resultMap="BookInfoResult">
         <include refid="selectBookInfoVo"/>
-        where book_id = #{bookId}
+        where book_id = #{bookId};
     </select>
 
     <insert id="insertBookInfo" parameterType="BookInfo" useGeneratedKeys="true" keyProperty="bookId">
@@ -83,4 +83,15 @@
         </trim>
         where book_id = #{bookId}
     </update>
+
+    <delete id="deletePdInfoByBookId" parameterType="Long">
+        delete from book_info where book_id = #{bookId}
+    </delete>
+
+    <delete id="deletePdInfoByBookIds" parameterType="String">
+        delete from book_info where book_id in
+        <foreach item="bookId" collection="array" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+    </delete>
 </mapper>

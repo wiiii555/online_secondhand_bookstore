@@ -20,6 +20,6 @@
     </environments>
 
     <mappers>
-        <package name="com.books.domain" />
+        <package name="com.books.mapper" />
     </mappers>
 </configuration>

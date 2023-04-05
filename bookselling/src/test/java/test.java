@@ -8,15 +8,22 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class test {
+
     public static void main(String[] args) throws IOException {
         String resource = "Mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
-        SqlSessionFactory Factory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = Factory.openSession();
-        BookInfoMapper books = sqlSession.getMapper(BookInfoMapper.class);
-//        List<BookInfo> allbooks = books.selectAll();
-//        System.out.println("allbooks: " + allbooks);
-//        BookInfo sth = books.selectBookInfoByBookId(1L);
+        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+        SqlSessionFactory factory = builder.build(inputStream);
+        SqlSession sqlSession = factory.openSession();
+
+        System.out.println("hello");
+
+//        BookInfoMapper mapper = sqlSession.getMapper(BookInfoMapper.class);
+//
+//        BookInfo test = new BookInfo();
+//        List<BookInfo> allBooks = mapper.selectBookInfoList(test);
+//        System.out.println("allBooks: " + allBooks);
+//        BookInfo sth = mapper.selectBookInfoByBookId(1L);
 //        String s = sth.toString();
 //        System.out.println("sth: " + s);
     }

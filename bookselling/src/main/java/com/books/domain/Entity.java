@@ -1,4 +1,4 @@
-package com.entity.domain;
+package com.books.domain;
 
 import java.io.Serializable;
 import java.util.Date;
