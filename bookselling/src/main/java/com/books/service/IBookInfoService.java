@@ -28,7 +28,7 @@ public interface IBookInfoService {
      * @param bookInfo 书籍信息
      * @return 结果
      */
-    public int insertbookInfo(BookInfo bookInfo);
+    public int insertBookInfo(BookInfo bookInfo);
 
     /**
      * 修改书籍信息
@@ -36,21 +36,21 @@ public interface IBookInfoService {
      * @param bookInfo 书籍信息
      * @return 结果
      */
-    public int updatebookInfo(BookInfo bookInfo);
+    public int updateBookInfo(BookInfo bookInfo);
 
     /**
      * 批量删除书籍信息
      *
-     * @param productIds 需要删除的书籍信息主键集合
+     * @param bookIds 需要删除的书籍信息主键集合
      * @return 结果
      */
-    public int deletebookInfoBybookIds(Long[] productIds);
+    public int deleteBookInfoByBookIds(Long[] bookIds);
 
     /**
      * 删除书籍信息信息
      *
-     * @param productId 书籍信息主键
+     * @param bookId 书籍信息主键
      * @return 结果
      */
-    public int deletebookInfoBybookId(Long productId);
+    public int deleteBookInfoByBookId(Long bookId);
 }

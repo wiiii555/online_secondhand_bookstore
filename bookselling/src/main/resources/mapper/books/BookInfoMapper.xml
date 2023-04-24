@@ -5,13 +5,17 @@
 <mapper namespace="com.books.mapper.BookInfoMapper">
 
     <resultMap type="BookInfo" id="BookInfoResult">
-        <id     property="bookId"           column="book_id"    />
-        <result property="isbn"             column="isbn"    />
-        <result property="bookName"         column="book_name"    />
-        <result property="bookCoverImg"     column="book_cover_img"    />
-        <result property="author"           column="author"    />
-        <result property="translator"       column="translator"    />
+        <id     property="bookId"           column="book_id" />
+        <result property="isbn"             column="isbn" />
+        <result property="bookName"         column="book_name" />
+        <result property="bookCoverImg"     column="book_cover_img" />
+        <result property="author"           column="author" />
         <result property="bookDesc"         column="book_desc"    />
+        <result property="ifTranslation"    column="if_translation" />
+        <result property="initialTitle"     column="initial_title" />
+        <result property="initialLang"      column="initial_lang" />
+        <result property="translator"       column="translator" />
+        <result property="lang"             column="lang"   />
         <result property="publishing"       column="publishing"    />
         <result property="publishTime"      column="publish_time"    />
         <result property="createBy"         column="create_by"    />
@@ -21,19 +25,22 @@
     </resultMap>
 
     <sql id="selectBookInfoVo">
-        select book_id, isbn, book_name, book_cover_img, author, translator, book_desc, publishing, publish_time, create_by, create_time, update_by, update_time
+        select *
         from book_info
     </sql>
 
     <select id="selectBookInfoList" parameterType="BookInfo" resultMap="BookInfoResult">
         <include refid="selectBookInfoVo"/>
         <where>
-            <if test="bookId != null and bookId != ''"> and i.book_id = #{bookId}</if>
-            <if test="isbn != null and isbn != ''"> and i.isbn = #{isbn}</if>
-            <if test="bookName != null  and bookName != ''"> and i.book_name like concat('%', #{bookName}, '%')</if>
-            <if test="author != null  and productCode != ''"> and i.author like concat('%', #{author}, '%')</if>
-            <if test="translator != null  and productRemark != ''"> and i.translator like concat('%', #{translator}, '%')</if>
-            <if test="publishing != null"> and i.publishing = #{publishing}</if>
+            <if test="bookId != null and bookId != ''"> and book_id = #{bookId}</if>
+            <if test="isbn != null and isbn != ''"> and isbn like concat('%', #{isbn}, '%')</if>
+            <if test="bookName != null  and bookName != ''"> and book_name like concat('%', #{bookName}, '%')</if>
+            <if test="author != null  and author != ''"> and author like concat('%', #{author}, '%')</if>
+            <if test="initialTitle != null  and initialTitle != ''"> and initial_title like concat('%', #{initialTitle}, '%')</if>
+            <if test="initialLang != null  and initialLang != ''"> and initial_lang = #{initalLang}</if>
+            <if test="translator != null  and translator != ''"> and translator like concat('%', #{translator}, '%')</if>
+            <if test="lang != null  and lang != ''"> and lang = #{lang}</if>
+            <if test="publishing != null"> and publishing like concat('%', #{publishing}, '%')</if>
         </where>
     </select>
 
@@ -49,7 +56,12 @@
             <if test="bookName != null and bookName != ''">book_name,</if>
             <if test="bookCoverImg != null and bookCoverImg != ''">book_cover_img,</if>
             <if test="author != null and author != ''">author,</if>
-            <if test="translator != null and translator != ''">translator,</if>
+            <if test="bookDesc != null and bookDesc != ''">book_desc,</if>
+            <if test="ifTranslation != null">if_translation,</if>
+            <if test="initialTitle != null">initial_title,</if>
+            <if test="initialLang != null">initial_lang,</if>
+            <if test="translator != null">translator,</if>
+            <if test="lang != null">lang,</if>
             <if test="publishing != null and publishing != ''">publishing,</if>
             <if test="publish_time != null and publish_time != ''">publish_time,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
@@ -57,12 +69,17 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="isbn != null and isbn != ''">#{isbn},</if>
-            <if test="bookName != null and bookName != ''">#{book_name},</if>
-            <if test="bookCoverImg != null and bookCoverImg != ''">#{book_cover_img},</if>
+            <if test="bookName != null and bookName != ''">#{bookName},</if>
+            <if test="bookCoverImg != null and bookCoverImg != ''">#{bookCoverImg},</if>
             <if test="author != null and author != ''">#{author},</if>
-            <if test="translator != null and translator != ''">#{translator},</if>
+            <if test="bookDesc != null and bookDesc != ''">#{bookDesc},</if>
+            <if test="ifTranslation != null">#{ifTranslation},</if>
+            <if test="initialTitle != null">#{initialTitle},</if>
+            <if test="initialLang != null">#{initialLang},</if>
+            <if test="translator != null">#{translator},</if>
+            <if test="lang != null">#{lang},</if>
             <if test="publishing != null and publishing != ''">#{publishing},</if>
-            <if test="publish_time != null and publish_time != ''">#{publish_time},</if>
+            <if test="publish_time != null and publish_time != ''">#{publishTime},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
         </trim>
@@ -71,24 +88,29 @@
     <update id="updateBookInfo" parameterType="BookInfo">
         update book_info
         <trim prefix="SET" suffixOverrides=",">
-            <if test="isbn != null and isbn != ''">#{isbn},</if>
-            <if test="bookName != null and bookName != ''">#{book_name},</if>
-            <if test="bookCoverImg != null and bookCoverImg != ''">#{book_cover_img},</if>
-            <if test="author != null and author != ''">#{author},</if>
-            <if test="translator != null and translator != ''">#{translator},</if>
-            <if test="publishing != null and publishing != ''">#{publishing},</if>
-            <if test="publish_time != null and publish_time != ''">#{publish_time},</if>
+            <if test="isbn != null and isbn != ''">isbn = #{isbn},</if>
+            <if test="bookName != null and bookName != ''">book_name = #{bookName},</if>
+            <if test="bookCoverImg != null and bookCoverImg != ''">book_cover_img = #{bookCoverImg},</if>
+            <if test="author != null and author != ''">author = #{author},</if>
+            <if test="bookDesc != null and bookDesc != ''">book_desc = #{bookDesc},</if>
+            <if test="ifTranslation != null">if_translation = #{ifTranslation},</if>
+            <if test="initialTitle != null">initial_title = #{initialTitle},</if>
+            <if test="initialLang != null">initial_lang = #{initialLang},</if>
+            <if test="translator != null">translator = #{translator},</if>
+            <if test="lang != null">lang = #{lang},</if>
+            <if test="publishing != null and publishing != ''">publishing = #{publishing},</if>
+            <if test="publish_time != null and publish_time != ''">publish_time = #{publishTime},</if>
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where book_id = #{bookId}
     </update>
 
-    <delete id="deletePdInfoByBookId" parameterType="Long">
+    <delete id="deleteBookInfoByBookId" parameterType="Long">
         delete from book_info where book_id = #{bookId}
     </delete>
 
-    <delete id="deletePdInfoByBookIds" parameterType="String">
+    <delete id="deleteBookInfoByBookIds" parameterType="String">
         delete from book_info where book_id in
         <foreach item="bookId" collection="array" open="(" separator="," close=")">
             #{bookId}

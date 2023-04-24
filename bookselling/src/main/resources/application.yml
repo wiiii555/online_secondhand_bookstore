@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8443
 spring:
   #数据库连接配置
   datasource:
@@ -11,7 +11,7 @@ spring:
 #mybatis的相关配置
 mybatis:
   #mapper配置文件
-  mapper-locations: classpath:mapper/books/BookInfoMapper.xml
+  mapper-locations: classpath:mapper/books/*Mapper.xml
   type-aliases-package: com.books.domain
   #开启驼峰命名
   configuration:

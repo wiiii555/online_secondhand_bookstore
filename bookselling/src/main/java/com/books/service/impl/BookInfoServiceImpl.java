@@ -6,6 +6,7 @@ import com.books.service.IBookInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,7 +32,7 @@ public class BookInfoServiceImpl implements IBookInfoService {
      * @return 书籍信息集合
      */
     public List<BookInfo> selectBookInfoList(BookInfo bookInfo) {
-        return null;
+        return mapper.selectBookInfoList(bookInfo);
     }
 
     /**
@@ -40,8 +41,10 @@ public class BookInfoServiceImpl implements IBookInfoService {
      * @param bookInfo 书籍信息
      * @return 结果
      */
-    public int insertbookInfo(BookInfo bookInfo) {
-        return 0;
+    public int insertBookInfo(BookInfo bookInfo) {
+        bookInfo.setCreateBy("wiiii");
+        bookInfo.setCreateTime(new Date());
+        return mapper.insertBookInfo(bookInfo);
     }
 
     /**
@@ -50,28 +53,30 @@ public class BookInfoServiceImpl implements IBookInfoService {
      * @param bookInfo 书籍信息
      * @return 结果
      */
-    public int updatebookInfo(BookInfo bookInfo) {
-        return 0;
+    public int updateBookInfo(BookInfo bookInfo) {
+        bookInfo.setUpdateBy("wiiii");
+        bookInfo.setUpdateTime(new Date());
+        return mapper.updateBookInfo(bookInfo);
     }
 
     /**
      * 批量删除书籍信息
      *
-     * @param productIds 需要删除的书籍信息主键集合
+     * @param bookIds 需要删除的书籍信息主键集合
      * @return 结果
      */
-    public int deletebookInfoBybookIds(Long[] productIds) {
-        return 0;
+    public int deleteBookInfoByBookIds(Long[] bookIds) {
+        return mapper.deleteBookInfoByBookIds(bookIds);
     }
 
     /**
      * 删除书籍信息信息
      *
-     * @param productId 书籍信息主键
+     * @param bookId 书籍信息主键
      * @return 结果
      */
-    public int deletebookInfoBybookId(Long productId) {
-        return 0;
+    public int deleteBookInfoByBookId(Long bookId) {
+        return mapper.deleteBookInfoByBookId(bookId);
     }
 
 }
