@@ -13,7 +13,7 @@ public class PdInfo extends Entity{
     /** 书籍id */
     private Long bookId;
 
-    /** 商品数量 */
+    /** 商品库存 */
     private int pdNum;
 
     /** 价格 */

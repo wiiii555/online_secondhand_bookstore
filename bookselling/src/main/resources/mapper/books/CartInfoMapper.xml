@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.books.mapper.CartInfoMapper">
+
+    <resultMap type="CartInfo" id="CartInfoResult">
+        <id     property="cartId"           column="cart_id" />
+        <result property="pdId"             column="pd_id" />
+        <result property="userCode"         column="user_code" />
+        <result property="pdCartNum"        column="pd_cart_num" />
+        <result property="createBy"         column="create_by"    />
+        <result property="createTime"       column="create_time"    />
+        <result property="updateBy"         column="update_by"    />
+        <result property="updateTime"       column="update_time"    />
+        <association property="pdInfo"  javaType="PdInfo" resultMap="PdInfoResult" />
+    </resultMap>
+
+    <resultMap type="PdInfo" id="PdInfoResult">
+        <id     property="pdId"             column="pd_id" />
+        <result property="ownerId"          column="owner_id" />
+        <result property="storeId"          column="store_id" />
+        <result property="bookId"           column="book_id" />
+        <result property="pdNum"            column="pd_num" />
+        <result property="price"            column="price"    />
+        <association property="bookInfo"  javaType="BookInfo" resultMap="BookInfoResult" />
+    </resultMap>
+
+    <resultMap type="BookInfo" id="BookInfoResult">
+        <id     property="bookId"           column="book_id" />
+        <result property="isbn"             column="isbn" />
+        <result property="bookName"         column="book_name" />
+        <result property="bookCoverImg"     column="book_cover_img" />
+        <result property="author"           column="author" />
+        <result property="bookDesc"         column="book_desc"    />
+        <result property="ifTranslation"    column="if_translation" />
+        <result property="initialTitle"     column="initial_title" />
+        <result property="initialLang"      column="initial_lang" />
+        <result property="translator"       column="translator" />
+        <result property="lang"             column="lang"   />
+        <result property="publishing"       column="publishing"    />
+        <result property="publishTime"      column="publish_time"    />
+    </resultMap>
+
+    <sql id="selectCartInfoVo">
+        select a.*,
+               b.pd_id, b.owner_id, b.store_id, b.book_id, b.pd_num, b.price,
+               c.book_id, c.isbn, c.book_name, c.book_cover_img, c.author
+        from cart_info a
+            left join pd_info b on a.pd_id = b.pd_id
+            left join book_info c on b.book_id = c.book_id
+    </sql>
+
+    <select id="selectCartInfoList" parameterType="CartInfo" resultMap="CartInfoResult">
+        <include refid="selectCartInfoVo"/>
+        <where>
+            <if test="cartId != null and cartId != ''"> and cart_id = #{cartId}</if>
+            <if test="pdId != null and pdId != ''"> and pd_id = #{pdId}</if>
+            <if test="userCode != null  and userCode != ''"> and user_code = #{userCode}</if>
+            <if test="pdCartNum != null  and pdCartNum != ''"> and pd_cart_num = #{pdCartNum}</if>
+        </where>
+    </select>
+
+    <select id="selectCartInfoByPdId" parameterType="Long" resultMap="CartInfoResult">
+        <include refid="selectCartInfoVo"/>
+        where cart_id = #{cartId};
+    </select>
+
+    <insert id="insertCartInfo" parameterType="CartInfo" useGeneratedKeys="true" keyProperty="pdId">
+        insert into cart_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pdId != null and pdId != ''">pd_id,</if>
+            <if test="userCode != null  and userCode != ''">user_code,</if>
+            <if test="pdCartNum != null  and pdCartNum != ''">pd_cart_num,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pdId != null and pdId != ''">#{pdId},</if>
+            <if test="userCode != null  and userCode != ''">#{userCode},</if>
+            <if test="pdCartNum != null  and pdCartNum != ''">#{pdCartNum},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePdCartNum" parameterType="CartInfo">
+        update cart_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pdCartNum != null  and pdCartNum != ''">pd_cart_num = #{pdCartNum},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where cart_id = #{cartId}
+    </update>
+
+    <delete id="deleteCartInfoByCartId" parameterType="Long">
+        delete from cart_info where cart_id = #{cartId}
+    </delete>
+
+    <delete id="deleteCartInfoByCartIds" parameterType="String">
+        delete from cart_info where cart_info.cart_id in
+        <foreach item="cartId" collection="array" open="(" separator="," close=")">
+            #{cartId}
+        </foreach>
+    </delete>
+</mapper>

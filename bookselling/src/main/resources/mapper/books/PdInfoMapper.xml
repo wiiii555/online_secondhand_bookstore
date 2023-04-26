@@ -59,7 +59,6 @@
     <insert id="insertPdInfo" parameterType="PdInfo" useGeneratedKeys="true" keyProperty="pdId">
         insert into pd_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="pdId != null and pdId != ''">pd_id,</if>
             <if test="ownerId != null and ownerId != ''">owner_id,</if>
             <if test="storeId != null  and storeId != ''">store_id,</if>
             <if test="bookId != null  and bookId != ''">book_id,</if>
@@ -69,7 +68,6 @@
             <if test="createTime != null">create_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="pdId != null and pdId != ''">#{pdId},</if>
             <if test="ownerId != null and ownerId != ''">#{ownerId},</if>
             <if test="storeId != null  and storeId != ''">#{storeId},</if>
             <if test="bookId != null  and bookId != ''">#{bookId},</if>
