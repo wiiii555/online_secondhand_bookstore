@@ -42,8 +42,8 @@ public class CartInfoServiceImpl implements ICartInfoService {
      * @return 结果
      */
     public int insertCartInfo(CartInfo cartInfo) {
-         cartInfo.setCreateBy("wiiii");
-         cartInfo.setCreateTime(new Date());
+        cartInfo.setCreateBy("wiiii");
+        cartInfo.setCreateTime(new Date());
         return mapper.insertCartInfo(cartInfo);
     }
 
@@ -79,4 +79,17 @@ public class CartInfoServiceImpl implements ICartInfoService {
         return mapper.deleteCartInfoByCartId(cartId);
     }
 
+    /**
+     * 校验商品在购物车中是否已存在
+     *
+     * @param cartInfo 购物车
+     * @return 存在则返回该购物车条目，否则返回null
+     */
+    public CartInfo checkIsPdExist(CartInfo cartInfo) {
+        List<CartInfo> list = mapper.selectCartInfoList(cartInfo);
+        if (list.size() > 0)
+            return list.get(0);
+        else
+            return null;
+    }
 }

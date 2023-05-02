@@ -35,7 +35,7 @@
     </resultMap>
 
     <sql id="selectPdInfoVo">
-        select a.*, b.book_id, b.isbn, b.book_name, b.book_cover_img, b.author, b.book_desc, b.if_translation, b.initial_title, b.initial_lang, b.translator, b.lang, b.publishing, b.publish_time
+        select a.*, b.isbn, b.book_name, b.book_cover_img, b.author, b.book_desc, b.if_translation, b.initial_title, b.initial_lang, b.translator, b.lang, b.publishing, b.publish_time
         from pd_info a left join book_info b on a.book_id = b.book_id
     </sql>
 
@@ -43,9 +43,9 @@
         <include refid="selectPdInfoVo"/>
         <where>
             <if test="pdId != null and pdId != ''"> and pd_id = #{pdId}</if>
-            <if test="ownerId != null and ownerId != ''"> and owner_id = #{ownerId}</if>
-            <if test="storeId != null  and storeId != ''"> and store_id = #{storeId}</if>
-            <if test="bookId != null  and bookId != ''"> and book_id = #{bookId}</if>
+            <if test="ownerId != null and ownerId != ''"> and a.owner_id = #{ownerId}</if>
+            <if test="storeId != null  and storeId != ''"> and a.store_id = #{storeId}</if>
+            <if test="bookId != null  and bookId != ''"> and a.book_id = #{bookId}</if>
             <if test="pdNum != null  and pdNum != ''"> and pd_num = #{pdNum}</if>
             <if test="price != null  and price != ''"> and price = #{price}</if>
         </where>

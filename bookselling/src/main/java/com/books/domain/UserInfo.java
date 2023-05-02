@@ -13,7 +13,7 @@ public class UserInfo extends Entity{
     /** 个人简介 */
     private String bio;
 
-    /** 用户职责 */
+    /** 用户职责: 1买家, 2卖家 */
     private int userRole;
 
     /** 头像url */
