@@ -19,9 +19,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
         return mapper.selectUserInfoByUserId(userId);
     }
 
-    public UserInfo selectUserInfoByUserCode(String userCode) {
-        return mapper.selectUserInfoByUserCode(userCode);
-    }
+    public String getPwdByUserId(Long userId) {return mapper.getPwdByUserId(userId);}
 
     public List<UserInfo> selectUserInfoList(UserInfo userInfo) {
         return mapper.selectUserInfoList(userInfo);

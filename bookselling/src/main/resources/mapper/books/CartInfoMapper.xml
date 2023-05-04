@@ -7,7 +7,7 @@
     <resultMap type="CartInfo" id="CartInfoResult">
         <id     property="cartId"           column="cart_id" />
         <result property="pdId"             column="pd_id" />
-        <result property="userCode"         column="user_code" />
+        <result property="userId"           column="userId" />
         <result property="pdCartNum"        column="pd_cart_num" />
         <result property="createBy"         column="create_by"    />
         <result property="createTime"       column="create_time"    />
@@ -44,8 +44,8 @@
 
     <sql id="selectCartInfoVo">
         select a.*,
-               b.pd_id, b.owner_id, b.store_id, b.book_id, b.pd_num, b.price,
-               c.book_id, c.isbn, c.book_name, c.book_cover_img, c.author
+               b.owner_id, b.store_id, b.book_id, b.pd_num, b.price,
+               c.isbn, c.book_name, c.book_cover_img, c.author
         from cart_info a
             left join pd_info b on a.pd_id = b.pd_id
             left join book_info c on b.book_id = c.book_id
@@ -55,9 +55,8 @@
         <include refid="selectCartInfoVo"/>
         <where>
             <if test="cartId != null and cartId != ''"> and cart_id = #{cartId}</if>
-            <if test="pdId != null and pdId != ''"> and pd_id = #{pdId}</if>
-            <if test="userCode != null  and userCode != ''"> and user_code = #{userCode}</if>
-            <if test="pdCartNum != null  and pdCartNum != ''"> and pd_cart_num = #{pdCartNum}</if>
+            <if test="pdId != null and pdId != ''"> and a.pd_id = #{pdId}</if>
+            <if test="userId != null  and userId != ''"> and userId = #{userId}</if>
         </where>
     </select>
 
@@ -70,14 +69,14 @@
         insert into cart_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="pdId != null and pdId != ''">pd_id,</if>
-            <if test="userCode != null  and userCode != ''">user_code,</if>
+            <if test="userId != null  and userId != ''">user_id,</if>
             <if test="pdCartNum != null  and pdCartNum != ''">pd_cart_num,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             <if test="createTime != null">create_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="pdId != null and pdId != ''">#{pdId},</if>
-            <if test="userCode != null  and userCode != ''">#{userCode},</if>
+            <if test="userId != null  and userId != ''">#{userId},</if>
             <if test="pdCartNum != null  and pdCartNum != ''">#{pdCartNum},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>

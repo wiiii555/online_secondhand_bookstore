@@ -52,7 +52,7 @@ drop table if exists user_info;
 create table user_info (
    user_id           bigint(20)      not null auto_increment    comment '用户id',
    user_name         varchar(20)     not null                   comment '用户名',
-   user_code         varchar(12)     not null                   comment '账号',
+   `password`        varchar(20)     not null                   comment '密码',
    bio               varchar(30)     null                       comment '简介',
    user_role         int             default 0                  comment '用户角色(0买家, 1卖家)',
    avatar_img        varchar(50)     default ''                 comment '头像',
@@ -183,7 +183,7 @@ drop table if exists cart_info;
 create table cart_info (
     cart_id           bigint(20)      not null auto_increment    comment '购物车id',
     pd_id             bigint(20)      not null                   comment '商品id',
-    user_code         varchar(12)     not null                   comment '账号',
+    user_id           bigint          not null                   comment '账号',
     pd_cart_num       int(5)          not null                   comment '购物车中商品数量',
 
     create_by         varchar(64)     default ''                 comment '创建者',

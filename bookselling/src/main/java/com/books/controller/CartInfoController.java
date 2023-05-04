@@ -43,7 +43,14 @@ public class CartInfoController {
     @PostMapping
     public int add(@RequestBody CartInfo cartInfo)
     {
-        return service.insertCartInfo(cartInfo);
+        List<CartInfo> checkList = service.selectCartInfoList(cartInfo);
+        if (checkList.isEmpty()) {
+            return service.insertCartInfo(cartInfo);
+        } else {
+            int newCartNumber = checkList.get(0).getPdCartNum() + 1;
+            checkList.get(0).setPdCartNum(newCartNumber);
+            return service.updatePdCartNum(checkList.get(0));
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.books.controller;
 
+import com.books.domain.HttpResult;
 import com.books.domain.UserInfo;
 import com.books.service.impl.UserInfoServiceImpl;
 import io.swagger.annotations.ApiOperation;
@@ -30,10 +31,10 @@ public class UserInfoController {
      * 获取用户信息详细信息
      */
     @ApiOperation("获取用户信息详细信息")
-    @GetMapping(value = "/{userCode}")
-    public UserInfo getInfo(@PathVariable("userCode") String userCode)
+    @GetMapping(value = "/{userId}")
+    public UserInfo getInfo(@PathVariable("userId") Long userId)
     {
-        return service.selectUserInfoByUserCode(userCode);
+        return service.selectUserInfoByUserId(userId);
     }
 
     /**
@@ -66,4 +67,21 @@ public class UserInfoController {
         return (service.deleteUserInfoByUserIds(userIds));
     }
 
+    /**
+     * 登录
+     */
+    @ApiOperation("登录")
+    @PostMapping("/login")
+    public HttpResult login(@RequestBody UserInfo userInfo)
+    {
+        Long userId = userInfo.getUserId();
+        String checkPassword = service.getPwdByUserId(userId);
+        if (checkPassword == null || checkPassword.equals("")) {
+            return new HttpResult(false, "用户不存在", null);
+        }else if (checkPassword.equals(userInfo.getPassword())) {
+            return new HttpResult(true, "登录成功", service.selectUserInfoByUserId(userId));
+        }else {
+            return new HttpResult(false, "密码错误", null);
+        }
+    }
 }

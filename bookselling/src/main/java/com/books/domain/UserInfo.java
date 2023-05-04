@@ -7,8 +7,8 @@ public class UserInfo extends Entity{
     /** 用户名 */
     private String userName;
 
-    /** 账号 */
-    private String userCode;
+    /** 密码 */
+    private String password;
 
     /** 个人简介 */
     private String bio;
@@ -35,15 +35,13 @@ public class UserInfo extends Entity{
         this.userName = userName;
     }
 
-
-    public String getUserCode() {
-        return userCode;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setPassword(String password) {
+        this.password = password;
     }
-
 
     public String getBio() {
         return bio;

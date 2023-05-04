@@ -15,12 +15,12 @@ public interface IUserInfoService {
     public UserInfo selectUserInfoByUserId(Long userId);
 
     /**
-     * 查询用户信息
+     * 查询用户密码
      *
-     * @param userCode 用户账号
-     * @return 用户信息
+     * @param userId 用户信息主键
+     * @return 用户密码
      */
-    public UserInfo selectUserInfoByUserCode(String userCode);
+    public String getPwdByUserId(Long userId);
 
     /**
      * 查询用户信息列表

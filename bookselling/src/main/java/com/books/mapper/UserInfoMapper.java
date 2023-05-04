@@ -12,7 +12,7 @@ public interface UserInfoMapper {
 
     UserInfo selectUserInfoByUserId(Long userId);
 
-    UserInfo selectUserInfoByUserCode(String userCode);
+    String getPwdByUserId(Long userId);
 
     int insertUserInfo(UserInfo user);
 

@@ -7,7 +7,7 @@
     <resultMap type="UserInfo" id="UserInfoResult">
         <id     property="userId"           column="user_id"    />
         <result property="userName"         column="user_name"    />
-        <result property="userCode"         column="user_code" />
+        <result property="password"         column="password" />
         <result property="bio"              column="bio"    />
         <result property="userRole"         column="user_role"    />
         <result property="avatarImg"        column="avatar_img"    />
@@ -18,7 +18,7 @@
     </resultMap>
 
     <sql id="selectUserInfoVo">
-        select *
+        select user_id, user_name, bio, user_role, avatar_img, create_by, create_time, update_by, update_time
         from user_info
     </sql>
 
@@ -37,9 +37,9 @@
         where user_id = #{userId};
     </select>
 
-    <select id="selectUserInfoByUserCode" parameterType="String" resultMap="UserInfoResult">
-        <include refid="selectUserInfoVo"/>
-        where user_code = #{userCode};
+    <select id="getPwdByUserId" parameterType="Long" resultType="String">
+        select `password` from user_info
+        where user_id = #{userId};
     </select>
 
     <insert id="insertUserInfo" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="userId">

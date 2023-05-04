@@ -8,7 +8,7 @@ public class CartInfo extends Entity{
     private Long pdId;
 
     /** 用户账号 */
-    private String userCode;
+    private Long userId;
 
     /** 商品在购物车中的数量 */
     private int pdCartNum;
@@ -32,12 +32,12 @@ public class CartInfo extends Entity{
         this.pdId = pdId;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public int getPdCartNum() {
