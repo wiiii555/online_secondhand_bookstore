@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/userinfo")
+@RequestMapping("/user")
 public class UserInfoController {
     @Autowired
     private UserInfoServiceImpl service;

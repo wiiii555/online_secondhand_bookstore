@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.books.mapper.OrderInfoMapper">
+
+    <resultMap type="OrderInfo" id="OrderInfoResult">
+        <id     property="orderId"          column="order_id" />
+        <result property="orderCode"        column="order_code" />
+        <result property="orderBuyerId"     column="order_buyer_id" />
+        <result property="orderSellerId"    column="order_seller_id" />
+        <result property="orderStatus"      column="order_status" />
+        <result property="totalCount"       column="total_count"    />
+        <result property="totalPrice"       column="total_price" />
+        <result property="receiverAddr"     column="receiver_addr" />
+        <result property="receiverInfo"     column="receiver_info"    />
+        <result property="createBy"         column="total_price"    />
+        <result property="createTime"       column="create_time"    />
+        <result property="updateBy"         column="update_by"    />
+        <result property="updateTime"       column="update_time"    />
+        <association property="orderItemInfo"  javaType="OrderItemInfo" resultMap="OrderItemInfoResult" />
+    </resultMap>
+
+    <resultMap type="OrderItemInfo" id="OrderItemInfoResult">
+        <id     property="itemId"           column="item_id" />
+        <result property="orderId"          column="order_id" />
+        <result property="pdId"             column="pd_id" />
+        <result property="itemNum"          column="item_num"    />
+        <result property="itemPrice"        column="item_price" />
+    </resultMap>
+
+    <sql id="selectPdInfoVo">
+        select a.*, b.isbn, b.book_name, b.book_cover_img, b.author, b.book_desc, b.if_translation, b.initial_title, b.initial_lang, b.translator, b.lang, b.publishing, b.publish_time
+        from pd_info a left join book_info b on a.book_id = b.book_id
+    </sql>
+
+    <select id="selectPdInfoList" parameterType="PdInfo" resultMap="PdInfoResult">
+        <include refid="selectPdInfoVo"/>
+        <where>
+            <if test="pdId != null and pdId != ''"> and pd_id = #{pdId}</if>
+            <if test="ownerId != null and ownerId != ''"> and a.owner_id = #{ownerId}</if>
+            <if test="storeId != null  and storeId != ''"> and a.store_id = #{storeId}</if>
+            <if test="bookId != null  and bookId != ''"> and a.book_id = #{bookId}</if>
+            <if test="pdNum != null  and pdNum != ''"> and pd_num = #{pdNum}</if>
+            <if test="price != null  and price != ''"> and price = #{price}</if>
+        </where>
+    </select>
+
+    <select id="selectPdInfoByPdId" parameterType="Long" resultMap="PdInfoResult">
+        <include refid="selectPdInfoVo"/>
+        where pd_id = #{pdId};
+    </select>
+
+    <insert id="insertPdInfo" parameterType="PdInfo" useGeneratedKeys="true" keyProperty="pdId">
+        insert into pd_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ownerId != null and ownerId != ''">owner_id,</if>
+            <if test="storeId != null  and storeId != ''">store_id,</if>
+            <if test="bookId != null  and bookId != ''">book_id,</if>
+            <if test="pdNum != null  and pdNum != ''">pd_num,</if>
+            <if test="price != null  and price != ''">price,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ownerId != null and ownerId != ''">#{ownerId},</if>
+            <if test="storeId != null  and storeId != ''">#{storeId},</if>
+            <if test="bookId != null  and bookId != ''">#{bookId},</if>
+            <if test="pdNum != null  and pdNum != ''"> #{pdNum},</if>
+            <if test="price != null  and price != ''">#{price},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePdInfo" parameterType="PdInfo">
+        update pd_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pdId != null and pdId != ''">pd_id = #{pdId},</if>
+            <if test="ownerId != null and ownerId != ''">owner_id = #{ownerId},</if>
+            <if test="storeId != null  and storeId != ''">store_id = #{storeId},</if>
+            <if test="bookId != null  and bookId != ''">book_id = #{bookId},</if>
+            <if test="pdNum != null  and pdNum != ''">pd_num = #{pdNum},</if>
+            <if test="price != null  and price != ''">price = #{price},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where pd_id = #{pdId}
+    </update>
+
+    <delete id="deletePdInfoByPdId" parameterType="Long">
+        delete from pd_info where pd_id = #{pdId}
+    </delete>
+
+    <delete id="deletePdInfoByBookIds" parameterType="String">
+        delete from pd_info where pd_id in
+        <foreach item="pdId" collection="array" open="(" separator="," close=")">
+            #{pdId}
+        </foreach>
+    </delete>
+</mapper>

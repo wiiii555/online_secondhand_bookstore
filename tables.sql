@@ -3,25 +3,25 @@ use secondbook;
 -- 书籍信息表
 drop table if exists book_info;
 create table book_info (
-  book_id           bigint(20)      not null auto_increment    comment '书籍id',
-  isbn              varchar(13)     not null                   comment '标准书号',
-  book_name         varchar(50)     not null                   comment '书名',
-  book_cover_img    varchar(200)    default ''                 comment '封面',
-  author            varchar(30)     default ''                 comment '作者',
-  book_desc         varchar(500)    default ''                 comment '简介',
-  if_translation    int(1)          default 0                  comment '是否为译本',
-  initial_title     varchar(50)     default ''                 comment '原书题目',
-  initial_lang      int(3)          default 0                  comment '原书语言',
-  translator        varchar(30)     default ''                 comment '译者',
-  lang              int(3)          default 0                  comment '语言',
-  publishing        varchar(30)     default null               comment '出版社',
-  publish_time      varchar(50)     default null               comment '出版时间',
+    book_id           bigint(20)      not null auto_increment    comment '书籍id',
+    isbn              varchar(13)     not null                   comment '标准书号',
+    book_name         varchar(50)     not null                   comment '书名',
+    book_cover_img    varchar(200)    default ''                 comment '封面',
+    author            varchar(30)     default ''                 comment '作者',
+    book_desc         varchar(500)    default ''                 comment '简介',
+    if_translation    int(1)          default 0                  comment '是否为译本',
+    initial_title     varchar(50)     default ''                 comment '原书题目',
+    initial_lang      int(3)          default 0                  comment '原书语言',
+    translator        varchar(30)     default ''                 comment '译者',
+    lang              int(3)          default 0                  comment '语言',
+    publishing        varchar(30)     default null               comment '出版社',
+    publish_time      varchar(50)     default null               comment '出版时间',
 
-  create_by         varchar(64)     default ''                 comment '创建者',
-  create_time 	    datetime                                   comment '创建时间',
-  update_by         varchar(64)     default ''                 comment '更新者',
-  update_time       datetime                                   comment '更新时间',
-  primary key (book_id)
+    create_by         varchar(64)     default ''                 comment '创建者',
+    create_time 	    datetime                                   comment '创建时间',
+    update_by         varchar(64)     default ''                 comment '更新者',
+    update_time       datetime                                   comment '更新时间',
+    primary key (book_id)
 ) engine=innodb comment = '书籍信息表';
 
 -- 初始化-书籍信息表数据
@@ -36,54 +36,54 @@ insert into book_info values(7,  '9787532775446', '悲剧的诞生：尼采美�
 -- 作者、译者信息表
 drop table if exists auth_trans_info;
 create table auth_trans_info (
-  auth_trans_id         bigint(20)      not null auto_increment    comment '作者、译者id',
-  auth_trans_name       varchar(30)     not null                   comment '作者、译者名字',
-  auth_trans_home       varchar(20)     default ''                 comment '作者、译者国籍',
-  auth_trans_desc       varchar(300)    default ''                 comment '作者、译者介绍',
-  create_by             varchar(64)     default ''                 comment '创建者',
-  create_time           datetime                                   comment '创建时间',
-  update_by             varchar(64)     default ''                 comment '更新者',
-  update_time           datetime                                   comment '更新时间',
-  primary key (auth_trans_id)
+    auth_trans_id         bigint(20)      not null auto_increment    comment '作者、译者id',
+    auth_trans_name       varchar(30)     not null                   comment '作者、译者名字',
+    auth_trans_home       varchar(20)     default ''                 comment '作者、译者国籍',
+    auth_trans_desc       varchar(300)    default ''                 comment '作者、译者介绍',
+    create_by             varchar(64)     default ''                 comment '创建者',
+    create_time           datetime                                   comment '创建时间',
+    update_by             varchar(64)     default ''                 comment '更新者',
+    update_time           datetime                                   comment '更新时间',
+    primary key (auth_trans_id)
 ) engine=innodb auto_increment=100 comment = '作者、译者信息表';
 
 -- 用户信息表
 drop table if exists user_info;
 create table user_info (
-   user_id           bigint(20)      not null auto_increment    comment '用户id',
-   user_name         varchar(20)     not null                   comment '用户名',
-   `password`        varchar(20)     not null                   comment '密码',
-   bio               varchar(30)     null                       comment '简介',
-   user_role         int             default 0                  comment '用户角色(0买家, 1卖家)',
-   avatar_img        varchar(50)     default ''                 comment '头像',
+    user_id           bigint(20)      not null auto_increment    comment '用户id',
+    user_name         varchar(20)     not null                   comment '用户名',
+    `password`        varchar(20)     not null                   comment '密码',
+    bio               varchar(30)     null                       comment '简介',
+    user_role         int             default 0                  comment '用户角色(0买家, 1卖家)',
+    avatar_img        varchar(50)     default ''                 comment '头像',
 
-   create_by         varchar(64)     default ''                 comment '创建者',
-   create_time 	     datetime                                   comment '创建时间',
-   update_by         varchar(64)     default ''                 comment '更新者',
-   update_time       datetime                                   comment '更新时间',
-   primary key (user_id)
+    create_by         varchar(64)     default ''                 comment '创建者',
+    create_time 	     datetime                                   comment '创建时间',
+    update_by         varchar(64)     default ''                 comment '更新者',
+    update_time       datetime                                   comment '更新时间',
+    primary key (user_id)
 ) engine=innodb comment = '用户信息表';
 
 -- 地址信息表
 drop table if exists addr_info;
 create table addr_info (
-   addr_id          bigint(20)      not null auto_increment     comment '地址id',
-   user_id          bigint(20)      not null                    comment '用户id',
-   addr_uname       varchar(50)     default ''                  comment '姓名',
-   addr_phone       char(11)        default ''                  comment '手机号',
-   addr_prov        varchar(50)     default ''                  comment '地址省',
-   addr_city        varchar(50)     default ''                  comment '地址市',
-   addr_region      varchar(50)     default ''                  comment '地址区',
-   addr_full        varchar(50)     default ''                  comment '详细地址',
-   addr_user        bigint          default null                comment '所属用户',
-   is_default       bigint          default '0'                 comment '是否默认 0非默认，1默认',
+    addr_id          bigint(20)      not null auto_increment     comment '地址id',
+    user_id          bigint(20)      not null                    comment '用户id',
+    addr_uname       varchar(50)     default ''                  comment '姓名',
+    addr_phone       char(11)        default ''                  comment '手机号',
+    addr_prov        varchar(50)     default ''                  comment '地址省',
+    addr_city        varchar(50)     default ''                  comment '地址市',
+    addr_region      varchar(50)     default ''                  comment '地址区',
+    addr_full        varchar(50)     default ''                  comment '详细地址',
+    addr_user        bigint          default null                comment '所属用户',
+    is_default       bigint          default '0'                 comment '是否默认 0非默认，1默认',
 
-   create_by         varchar(64)     default ''                 comment '创建者',
-   create_time 	     datetime                                   comment '创建时间',
-   update_by         varchar(64)     default ''                 comment '更新者',
-   update_time       datetime                                   comment '更新时间',
-   primary key (addr_id),
-   constraint `ad_fk` foreign key (`user_id`) references `user_info` (`user_id`) on delete cascade
+    create_by         varchar(64)     default ''                 comment '创建者',
+    create_time 	     datetime                                   comment '创建时间',
+    update_by         varchar(64)     default ''                 comment '更新者',
+    update_time       datetime                                   comment '更新时间',
+    primary key (addr_id),
+    constraint `ad_fk` foreign key (`user_id`) references `user_info` (`user_id`) on delete cascade
 ) engine=innodb comment = '地址信息表';
 
 -- 订单信息表

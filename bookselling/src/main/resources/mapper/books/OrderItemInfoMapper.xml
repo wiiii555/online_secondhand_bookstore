@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.books.mapper.OrderItemInfoMapper">
+
+    <resultMap type="OrderItemInfo" id="OrderItemInfoResult">
+        <id     property="itemId"           column="item_id" />
+        <result property="orderId"          column="order_id" />
+        <result property="pdId"             column="pd_id" />
+        <result property="itemNum"          column="item_num"    />
+        <result property="itemPrice"        column="item_price" />
+        <result property="createBy"         column="create_by"    />
+        <result property="createTime"       column="create_time"    />
+        <result property="updateBy"         column="update_by"    />
+        <result property="updateTime"       column="update_time"    />
+        <association property="pdInfo"  javaType="PdInfo" resultMap="PdInfoResult" />
+    </resultMap>
+
+    <resultMap type="PdInfo" id="PdInfoResult">
+        <id     property="pdId"             column="pd_id" />
+        <result property="ownerId"          column="owner_id" />
+        <result property="storeId"          column="store_id" />
+        <result property="bookId"           column="book_id" />
+        <result property="pdNum"            column="pd_num" />
+        <result property="price"            column="price"    />
+        <association property="bookInfo"  javaType="BookInfo" resultMap="BookInfoResult" />
+    </resultMap>
+
+    <resultMap type="BookInfo" id="BookInfoResult">
+        <id     property="bookId"           column="book_id" />
+        <result property="isbn"             column="isbn" />
+        <result property="bookName"         column="book_name" />
+        <result property="bookCoverImg"     column="book_cover_img" />
+        <result property="author"           column="author" />
+    </resultMap>
+
+    <sql id="selectOrderItemInfoVo">
+        select a.*,
+               b.pd_id, b.owner_id, b.store_id, b.book_id, b.pd_num,
+               c.isbn, c.book_name, c.book_cover_img, c.author
+        from cart_info a
+                 left join pd_info b on a.pd_id = b.pd_id
+                 left join book_info c on b.book_id = c.book_id
+    </sql>
+
+    <select id="selectOrderItemInfoList" parameterType="OrderItemInfo" resultMap="OrderItemInfoResult">
+        <include refid="selectOrderItemInfoVo"/>
+        <where>
+            <if test="itemId != null and itemId != ''"> and item_id = #{itemId}</if>
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+        </where>
+    </select>
+
+    <select id="selectOrderItemInfoByOrderItemId" parameterType="Long" resultMap="OrderItemInfoResult">
+        <include refid="selectOrderItemInfoVo"/>
+        where item_id = #{itemId};
+    </select>
+
+    <insert id="insertOrderItemInfo" parameterType="OrderItemInfo" useGeneratedKeys="true" keyProperty="itemId">
+        insert into order_item_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">order_id,</if>
+            <if test="pdId != null and pdId != ''">pd_id,</if>
+            <if test="itemNum != null and itemNum != ''">item_num,</if>
+            <if test="itemPrice != null">item_price,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">#{orderId},</if>
+            <if test="pdId != null and pdId != ''">#{pdId},</if>
+            <if test="itemNum != null and itemNum != ''">#{itemNum},</if>
+            <if test="itemPrice != null">#{itemPrice},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOrderItemInfo" parameterType="OrderItemInfo">
+        update order_item_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">order_id = #{orderId},</if>
+            <if test="pdId != null and pdId != ''">pd_id = #{pdId},</if>
+            <if test="author != null and author != ''">author = #{author},</if>
+            <if test="itemNum != null and itemNum != ''">item_num = #{itemNum},</if>
+            <if test="itemPrice != null">item_price = #{itemPrice},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where item_id = #{itemId}
+    </update>
+
+    <delete id="deleteOrderItemInfoByOrderItemId" parameterType="Long">
+        delete from order_item_info where item_id = #{itemId}
+    </delete>
+
+    <delete id="deleteOrderItemInfoByOrderItemIds" parameterType="String">
+        delete from order_item_info where item_id in
+        <foreach item="itemId" collection="array" open="(" separator="," close=")">
+            #{itemId}
+        </foreach>
+    </delete>
+</mapper>

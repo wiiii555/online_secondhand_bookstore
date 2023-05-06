@@ -7,7 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface BookInfoMapper {
-
     List<BookInfo> selectBookInfoList(BookInfo book);
 
     BookInfo selectBookInfoByBookId(Long bookId);

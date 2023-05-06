@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bookinfo")
+@RequestMapping("/book")
 public class BookInfoController {
     @Autowired
     private BookInfoServiceImpl service;
