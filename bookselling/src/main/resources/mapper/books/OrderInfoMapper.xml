@@ -27,15 +27,40 @@
         <result property="pdId"             column="pd_id" />
         <result property="itemNum"          column="item_num"    />
         <result property="itemPrice"        column="item_price" />
+        <association property="pdInfo"  javaType="PdInfo" resultMap="PdInfoResult" />
     </resultMap>
 
-    <sql id="selectPdInfoVo">
-        select a.*, b.isbn, b.book_name, b.book_cover_img, b.author, b.book_desc, b.if_translation, b.initial_title, b.initial_lang, b.translator, b.lang, b.publishing, b.publish_time
-        from pd_info a left join book_info b on a.book_id = b.book_id
+    <resultMap type="PdInfo" id="PdInfoResult">
+        <id     property="pdId"             column="pd_id" />
+        <result property="ownerId"          column="owner_id" />
+        <result property="storeId"          column="store_id" />
+        <result property="bookId"           column="book_id" />
+        <result property="pdNum"            column="pd_num" />
+        <result property="price"            column="price"    />
+        <association property="bookInfo"  javaType="BookInfo" resultMap="BookInfoResult" />
+    </resultMap>
+
+    <resultMap type="BookInfo" id="BookInfoResult">
+        <id     property="bookId"           column="book_id" />
+        <result property="isbn"             column="isbn" />
+        <result property="bookName"         column="book_name" />
+        <result property="bookCoverImg"     column="book_cover_img" />
+        <result property="author"           column="author" />
+    </resultMap>
+
+    <sql id="selectOrderInfoVo">
+        select a.order_id, a.order_code, a.order_buyer_id, a.order_seller_id, a.order_status, a.total_count, a.total_price, a.receiver_addr, a.receiver_info, a.create_by, a.create_time, a.update_by, a.update_time,
+               b.item_id, b.pd_id, b.item_num, b.item_price,
+               c.owner_id, c.store_id, c.pd_num,
+               d.book_id, d.isbn, d.book_name, d.book_cover_img, d.author, d.book_desc
+        from order_info a
+            left join order_item_info b on a.order_id = b.order_id
+            left join pd_info c on b.pd_id = c.pd_id
+            left join book_info d on c.book_id = d.book_id
     </sql>
 
-    <select id="selectPdInfoList" parameterType="PdInfo" resultMap="PdInfoResult">
-        <include refid="selectPdInfoVo"/>
+    <select id="selectOrderInfoList" parameterType="OrderInfo" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
         <where>
             <if test="pdId != null and pdId != ''"> and pd_id = #{pdId}</if>
             <if test="ownerId != null and ownerId != ''"> and a.owner_id = #{ownerId}</if>
@@ -46,12 +71,12 @@
         </where>
     </select>
 
-    <select id="selectPdInfoByPdId" parameterType="Long" resultMap="PdInfoResult">
-        <include refid="selectPdInfoVo"/>
+    <select id="selectOrderInfoByOrderId" parameterType="Long" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
         where pd_id = #{pdId};
     </select>
 
-    <insert id="insertPdInfo" parameterType="PdInfo" useGeneratedKeys="true" keyProperty="pdId">
+    <insert id="insertOrderInfo" parameterType="OrderInfo" useGeneratedKeys="true" keyProperty="pdId">
         insert into pd_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ownerId != null and ownerId != ''">owner_id,</if>
@@ -73,7 +98,7 @@
         </trim>
     </insert>
 
-    <update id="updatePdInfo" parameterType="PdInfo">
+    <update id="updateOrderInfo" parameterType="OrderInfo">
         update pd_info
         <trim prefix="SET" suffixOverrides=",">
             <if test="pdId != null and pdId != ''">pd_id = #{pdId},</if>
@@ -88,11 +113,11 @@
         where pd_id = #{pdId}
     </update>
 
-    <delete id="deletePdInfoByPdId" parameterType="Long">
+    <delete id="deleteOrderInfoByOrderId" parameterType="Long">
         delete from pd_info where pd_id = #{pdId}
     </delete>
 
-    <delete id="deletePdInfoByBookIds" parameterType="String">
+    <delete id="deleteOrderInfoByBookIds" parameterType="String">
         delete from pd_info where pd_id in
         <foreach item="pdId" collection="array" open="(" separator="," close=")">
             #{pdId}

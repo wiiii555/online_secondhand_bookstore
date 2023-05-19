@@ -18,9 +18,10 @@ public class BookInfoController {
      * 查询书籍信息列表
      */
     @ApiOperation("查询书籍信息列表")
-    @GetMapping("/list")
-    public List<BookInfo> list(BookInfo bookInfo)
+    @PostMapping("/list")
+    public List<BookInfo> list(@RequestBody BookInfo bookInfo)
     {
+//        System.out.println(bookInfo.toString());
         List<BookInfo> list = service.selectBookInfoList(bookInfo);
         return list;
     }

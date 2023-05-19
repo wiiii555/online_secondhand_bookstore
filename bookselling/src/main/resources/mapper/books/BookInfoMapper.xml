@@ -33,7 +33,7 @@
         <include refid="selectBookInfoVo"/>
         <where>
             <if test="bookId != null and bookId != ''"> and book_id = #{bookId}</if>
-            <if test="isbn != null and isbn != ''"> and isbn like concat('%', #{isbn}, '%')</if>
+            <if test="isbn != null and isbn != ''"> and isbn = #{isbn}=</if>
             <if test="bookName != null  and bookName != ''"> and book_name like concat('%', #{bookName}, '%')</if>
             <if test="author != null  and author != ''"> and author like concat('%', #{author}, '%')</if>
             <if test="initialTitle != null  and initialTitle != ''"> and initial_title like concat('%', #{initialTitle}, '%')</if>
@@ -63,7 +63,7 @@
             <if test="translator != null">translator,</if>
             <if test="lang != null">lang,</if>
             <if test="publishing != null and publishing != ''">publishing,</if>
-            <if test="publish_time != null and publish_time != ''">publish_time,</if>
+            <if test="publishTime != null and publishTime != ''">publish_time,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             <if test="createTime != null">create_time,</if>
         </trim>
@@ -79,7 +79,7 @@
             <if test="translator != null">#{translator},</if>
             <if test="lang != null">#{lang},</if>
             <if test="publishing != null and publishing != ''">#{publishing},</if>
-            <if test="publish_time != null and publish_time != ''">#{publishTime},</if>
+            <if test="publishTime != null and publishTime != ''">#{publishTime},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
         </trim>

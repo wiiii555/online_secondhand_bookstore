@@ -42,8 +42,7 @@ public class BookInfoServiceImpl implements IBookInfoService {
      * @return 结果
      */
     public int insertBookInfo(BookInfo bookInfo) {
-        bookInfo.setCreateBy("wiiii");
-        bookInfo.setCreateTime(new Date());
+        System.out.println(bookInfo.getCreateTime());
         return mapper.insertBookInfo(bookInfo);
     }
 
@@ -54,8 +53,6 @@ public class BookInfoServiceImpl implements IBookInfoService {
      * @return 结果
      */
     public int updateBookInfo(BookInfo bookInfo) {
-        bookInfo.setUpdateBy("wiiii");
-        bookInfo.setUpdateTime(new Date());
         return mapper.updateBookInfo(bookInfo);
     }
 

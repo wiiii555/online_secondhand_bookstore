@@ -153,5 +153,22 @@ public class BookInfo extends Entity {
         this.publishTime = publishTime;
     }
 
-
+    @Override
+    public String toString() {
+        return "BookInfo{" +
+                "bookId=" + bookId +
+                ", isbn='" + isbn + '\'' +
+                ", bookName='" + bookName + '\'' +
+                ", bookCoverImg='" + bookCoverImg + '\'' +
+                ", author='" + author + '\'' +
+                ", bookDesc='" + bookDesc + '\'' +
+                ", ifTranslation=" + ifTranslation +
+                ", initialTitle='" + initialTitle + '\'' +
+                ", initialLang=" + initialLang +
+                ", translator='" + translator + '\'' +
+                ", lang=" + lang +
+                ", publishing='" + publishing + '\'' +
+                ", publishTime='" + publishTime + '\'' +
+                '}';
+    }
 }
